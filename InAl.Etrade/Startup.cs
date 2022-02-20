@@ -1,9 +1,11 @@
 using InAl.Etrade.Data;
+using InAl.Etrade.Email;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -32,9 +34,34 @@ namespace InAl.Etrade
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDatabaseDeveloperPageExceptionFilter();
 
-            services.AddDefaultIdentity<IdentityUser>()
+            services.AddIdentity<IdentityUser,IdentityRole>().AddDefaultTokenProviders()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
-            services.AddControllersWithViews();
+            services.AddSingleton<IEmailSender, EmailSender>();
+            services.Configure<EmailOptions>(Configuration);
+            services.AddControllersWithViews().AddRazorRuntimeCompilation();
+
+            services.AddRazorPages();
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = $"/Identity/Account/Login";
+                options.LogoutPath = $"/Identity/Account/Logout";
+                options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
+            });
+            services.AddAuthentication().AddFacebook(
+           opt =>
+           {
+               opt.AppId = "975127283401279";
+               opt.AppSecret = "fa05a1d95e8c1bbe9d1458a984b9cde8";
+           }
+            );
+            services.AddAuthentication().AddGoogle(
+        opt =>
+        {
+            opt.ClientId = "510580364283-dlig2iet5fsaj6j2jgln5qmd55kog47k.apps.googleusercontent.com";
+            opt.ClientSecret = "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";
+        }
+         );
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

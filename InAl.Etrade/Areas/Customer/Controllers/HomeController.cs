@@ -1,4 +1,5 @@
-﻿using InAl.Etrade.Models;
+﻿using InAl.Etrade.Data;
+using InAl.Etrade.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -14,14 +15,18 @@ namespace InAl.Etrade.Areas.Customer.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        private readonly ApplicationDbContext _db;
+
+        public HomeController(ILogger<HomeController> logger, ApplicationDbContext db)
         {
             _logger = logger;
+            _db = db;
         }
 
         public IActionResult Index()
         {
-            return View();
+            var products = _db.Products.Where(i=>i.IsHome).ToList();
+            return View(products);
         }
 
         public IActionResult Privacy()
