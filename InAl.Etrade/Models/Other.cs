@@ -12,7 +12,7 @@ namespace InAl.Etrade.Models
         public const string Role_Member = "Üye";
         public const string Role_Admin = "Admin";
         public const string Role_User = "User";
-
+        public const string ssShoppingCart = "Shopping Cart Session";
 
     }
 }

@@ -1,6 +1,7 @@
-﻿@model IEnumerable<InAl.Etrade.Models.Product>
+﻿@model IEnumerable<Product>
 @{
     ViewData["Title"] = "Home Page";
+
 }
 
 <div class="container">
@@ -19,32 +20,41 @@
             </div>
         </div>
         <div class="col-md-9">
-
             <div class="container">
                 <div class="row">
                     @foreach (var item in Model)
                     {
                         <div class="col-md-4 mb-3">
                             <div class="card">
-                                <div class="card-header">
+                                <div class="card-header" style="white-space: nowrap; color: green; overflow: hidden; text-overflow: ellipsis;">
                                     @item.Title
                                 </div>
-                                <img src="@item.Image" class="card-img-top" alt="..." style="height:200px">
+                                @if (item.Image == null)
+                                {
+                                    <img src="~/images/image/not-image.png" style="height: 200px" />
+                                }
+                                else
+                                {
+                                    <img src="@item.Image" class="card-img-top" alt="@item.Description" style="height: 200px">
+                                }
                                 <div class="card-body">
-                                    <p class="card-text">@item.Description</p>
+                                    <p class="card-text" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" alt="@item.Description">@item.Description</p>
                                 </div>
                                 <div class="card-footer">
-                                    <label style="font-size:20px;color:crimson "><b>@item.Price.ToString("0.00") ₺</b></label>
-                                    <a asp-action="Details" asp-controller="Home" asp-route-id="@item.ID" class="btn btn-outline-info" style="float:right">Detay</a>
+                                    <label style="font-size: 20px; color: crimson"><b>@item.Price.ToString()₺</b></label>
+
+                                    <a asp-action="Details" asp-controller="Home" asp-route-id="@item.ID" class="btn btn-outline-info"
+                                       style="float: right">Detay</a>
                                 </div>
                             </div>
                         </div>
+
                     }
-
                 </div>
-
             </div>
+
         </div>
+
 
     </div>
 </div>

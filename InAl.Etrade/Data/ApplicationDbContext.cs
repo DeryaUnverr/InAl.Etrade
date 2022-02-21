@@ -21,5 +21,6 @@ namespace InAl.Etrade.Data
 
         public DbSet<OrderHeader> OrderHeader { get; set; }
         public DbSet<OrderDetails> OrderDetails { get; set; }
+      //  public IEnumerable<object> ShoppingCarts { get; internal set; }
     }
 }

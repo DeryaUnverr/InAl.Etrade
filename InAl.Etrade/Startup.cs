@@ -61,6 +61,12 @@ namespace InAl.Etrade
             opt.ClientSecret = "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";
         }
          );
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(30);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
 
         }
 
@@ -82,7 +88,7 @@ namespace InAl.Etrade
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseSession();
             app.UseAuthentication();
             app.UseAuthorization();
 
