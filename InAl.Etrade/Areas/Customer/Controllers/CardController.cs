@@ -35,8 +35,61 @@ namespace InAl.Etrade.Areas.Customer.Controllers
             _emailSender = emailSender;
             _userManager = userManager;
         }
+        public IActionResult Summary()
+        {
+            var claimIdentity = (ClaimsIdentity)User.Identity;
+            var claim = claimIdentity.FindFirst(ClaimTypes.NameIdentifier);
+            ShopingCardVM = new ShopingCardVM()
+            {
+                OrderHeader = new OrderHeader(),
+                ListCard = _db.ShopingCards.Where(x => x.ApplicationUserID == claim.Value).Include(y => y.Product)
+            };
+            foreach (var item in ShopingCardVM.ListCard)
+            {
+                item.Price = item.Product.Price;
+                ShopingCardVM.OrderHeader.OrderTotal += (item.Count * item.Product.Price);
+
+            }
+            return View(ShopingCardVM);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Summary(ShopingCardVM model)
+        {
+
+            var claimIdentity = (ClaimsIdentity)User.Identity;
+            var claim = claimIdentity.FindFirst(ClaimTypes.NameIdentifier);
+            ShopingCardVM.ListCard = _db.ShopingCards.Where(x=>x.ApplicationUserID==claim.Value).Include(k=>k.Product);
+            ShopingCardVM.OrderHeader.OrderStatus = Other.Durum_Beklemede;
+            ShopingCardVM.OrderHeader.ApplicationUserID = claim.Value;
+            ShopingCardVM.OrderHeader.OrderDate=DateTime.Now;
+            _db.OrderHeader.Add(ShopingCardVM.OrderHeader);
+            _db.SaveChanges();
+            foreach (var item in ShopingCardVM.ListCard)
+            {
+                item.Price = item.Product.Price;
+                OrderDetails orderDetails = new OrderDetails()
+                {
+                    ProductID = item.ProductID,
+                    OrderID = ShopingCardVM.OrderHeader.ID,
+                    Price = item.Price,
+                    Count = item.Count
+                };
+                ShopingCardVM.OrderHeader.OrderTotal += item.Count * item.Product.Price;
+                model.OrderHeader.OrderTotal += item.Count * item.Product.Price;
+                _db.OrderDetails.Add(orderDetails);
+            }
+            _db.ShopingCards.RemoveRange(ShopingCardVM.ListCard);
+            _db.SaveChanges();
+            HttpContext.Session.SetInt32(Other.ssShoppingCart, 0);
+            return RedirectToAction("SiparisTamam");
 
 
+        }
+        public IActionResult SiparisTamam()
+        {
+            return View();
+        }
         public IActionResult Index()
         {
             var claimIdentity = (ClaimsIdentity)User.Identity;
