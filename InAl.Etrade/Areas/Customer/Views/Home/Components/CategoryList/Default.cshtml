@@ -1,0 +1,20 @@
+﻿@model IEnumerable<InAl.Etrade.Models.Category>
+
+    <div class="col-md-3">
+        <div class="card">
+            <div class="list-group">
+                <a asp-action="Index" asp-controller="Home" class="list-group-item list-group-item-action @(ViewBag.KategoriID==null?"active":"")" aria-current="true">
+                    Tüm Ürünler
+                </a>
+
+                @foreach (var item in Model)
+                {
+                    <a asp-action="CategoryDetails" class="list-group-item list-group-item-action @(ViewBag.KategoriID?.ToString()==item.ID.ToString()?"active":"") "asp-route-id="@item.ID">@item.Name</a>
+                }
+            </div>
+        </div>
+    </div>
+
+
+
+

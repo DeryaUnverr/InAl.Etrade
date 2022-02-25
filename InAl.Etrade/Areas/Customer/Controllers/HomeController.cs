@@ -25,7 +25,21 @@ namespace InAl.Etrade.Areas.Customer.Controllers
             _logger = logger;
             _db = db;
         }
-
+        public IActionResult Search(string q)
+        {
+            if (!String.IsNullOrEmpty(q))
+            {
+                var ara = _db.Products.Where(x => x.Title.Contains(q) || x.Description.Contains(q));
+                return View(ara);
+            }
+            return View();
+        }
+        public IActionResult CategoryDetails(int? id)
+        {
+            var product = _db.Products.Where(x => x.CategoryID == id).ToList();
+            ViewBag.KategoriID = id;
+            return View(product);
+        }
         public IActionResult Index()
         {
             var products = _db.Products.Where(i=>i.IsHome && i.IsStock).ToList();

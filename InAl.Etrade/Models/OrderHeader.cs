@@ -33,7 +33,17 @@ namespace InAl.Etrade.Models
         public string County { get; set; }
         [Required]
         public string PostalCode { get; set; }
+        [Required]
+        public string CartName { get; set; }
+        [Required]
+        public string CartNumber { get; set; }
+        [Required]
+        public string ExprationMonth { get; set; }
+        [Required]
+        public string ExprationYear { get; set; }
 
+        [Required]
+        public string Cvc { get; set; }
 
     }
 }

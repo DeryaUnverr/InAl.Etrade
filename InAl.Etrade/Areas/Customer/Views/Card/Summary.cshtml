@@ -63,7 +63,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="col-md-12">
-                            
+
                             <ul class="list-group mb-3">
                                 @foreach (var item in Model.ListCard)
                                 {
@@ -79,13 +79,42 @@
                                 <li class="list-group-item d-flex justify-content-between bg-light">
                                     <div class="text-success">
                                         <h6 class="my-0">Toplam Tutar</h6>
-                                   
+
                                     </div>
                                     <span class="text-success">@(Model.OrderHeader.OrderTotal.ToString("0.00")) ₺</span>
                                 </li>
-                            
+
                             </ul>
 
+                        </div>
+                        <div class="mb-3 row">
+                            <label for="inputPassword" class="col-sm-4 col-form-label"> kart Adı</label>
+                            <div class="col-sm-8">
+                                <input type="text" asp-for="OrderHeader.CartName" class="form-control">
+                                <span asp-validation-for="OrderHeader.CartName" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label for="inputPassword" class="col-sm-4 col-form-label"> kart Numarası</label>
+                            <div class="col-sm-8">
+                                <input type="text" asp-for="OrderHeader.CartNumber" class="form-control">
+                                <span asp-validation-for="OrderHeader.CartNumber" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+
+                            <div class="col-sm-4">
+                                <input type="text" asp-for="OrderHeader.ExprationMonth" class="form-control" placeholder="Ay">
+                                <span asp-validation-for="OrderHeader.ExprationMonth" class="text-danger"></span>
+                            </div>
+                            <div class="col-sm-4">
+                                <input type="text" asp-for="OrderHeader.ExprationYear" class="form-control" placeholder="Yıl">
+                                <span asp-validation-for="OrderHeader.ExprationYear" class="text-danger"></span>
+                            </div>
+                            <div class="col-sm-4">
+                                <input type="text" asp-for="OrderHeader.Cvc" class="form-control" placeholder="Güvenlik Kodu">
+                                <span asp-validation-for="OrderHeader.Cvc" class="text-danger"></span>
+                            </div>
                         </div>
                     </div>
                 </div>
